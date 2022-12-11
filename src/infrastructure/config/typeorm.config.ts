@@ -1,6 +1,6 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-export const typeOrmConfig: TypeOrmModuleOptions = {
+export const options: DataSourceOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST || 'postgres-db',
   port: +process.env.POSTGRES_PORT || 5432,
@@ -16,3 +16,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   ],
   synchronize: false,
 };
+
+const dataSource = new DataSource(options);
+
+export default dataSource;
