@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../database/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
-import { CreateUserDto } from '../../handler/dto/create-user.dto';
+import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
 
 @Injectable()
 export class UserRepository implements UserInterface {
@@ -31,10 +31,15 @@ export class UserRepository implements UserInterface {
 
   async updateUser(
     id: number,
-    updateUserDto: CreateUserInterface,
+    user: UpdateUserInterface,
   ): Promise<CreateUserInterface> {
-    const user = this.getOneUser(id);
+    await this.ormRepository.update(id, user);
 
-    return this.ormRepository.save({ ...user, ...updateUserDto });
+    return this.getOneUser(id);
+  }
+
+  async removeUser(id: number): Promise<DeleteResult> {
+    await this.getOneUser(id);
+    return this.ormRepository.delete(id);
   }
 }

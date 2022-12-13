@@ -6,4 +6,5 @@ export interface UserInterface {
   getAllUsers(): Promise<User[]>;
   getOneUser(id: number): Promise<User>;
   updateUser(id: number, user: UpdateUserInterface): Promise<User>;
+  removeUser(id: number): Promise<any>;
 }
