@@ -29,10 +29,12 @@ export class UserRepository implements UserInterface {
     return this.ormRepository.findOneOrFail({ where: { id } });
   }
 
-  // async updateUser(
-  //   id: number,
-  //   updateUserDto: CreateUserInterface,
-  // ): Promise<CreateUserInterface> {
-  //   // return this.ormRepository.upsert({})
-  // }
+  async updateUser(
+    id: number,
+    updateUserDto: CreateUserInterface,
+  ): Promise<CreateUserInterface> {
+    const user = this.getOneUser(id);
+
+    return this.ormRepository.save({ ...user, ...updateUserDto });
+  }
 }

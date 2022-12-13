@@ -9,7 +9,7 @@ export class CreateUserDto implements CreateUserInterface {
     description: 'Name of the user',
     example: 'John Doe',
   })
-  public username!: string;
+  public username: string;
 
   @IsString()
   @ApiProperty({ description: 'Password of the user', example: '*******' })

@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UpdateUserDto } from '../../handler/dto/update-user.dto';
 import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
+import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
 
 @Injectable()
 export class UserService {
@@ -22,9 +22,9 @@ export class UserService {
     return this.userInterface.getOneUser(id);
   }
 
-  // update(id: number, updateUserDto: CreateUserInterface) {
-  //   return this.userInterface.updateUser(id, updateUserDto);
-  // }
+  update(id: number, updateUserDto: UpdateUserInterface) {
+    return this.userInterface.updateUser(id, updateUserDto);
+  }
 
   remove(id: number) {
     return `This action removes a #${id} user`;
