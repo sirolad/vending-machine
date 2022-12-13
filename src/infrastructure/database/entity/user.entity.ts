@@ -1,6 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../../domain/enum/role.enum';
 import { Product } from './product.entity';
+import { IsNumber, Validate } from 'class-validator';
+import { IsValidCoin } from '../../validators/is-valid-coin.validator';
 
 @Entity('user')
 export class User {
@@ -14,6 +16,8 @@ export class User {
   password: string;
 
   @Column({ type: 'int', nullable: true })
+  @IsNumber()
+  @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
   deposit: number;
 
   @Column({ type: 'enum', enum: Role, default: Role.Buyer })

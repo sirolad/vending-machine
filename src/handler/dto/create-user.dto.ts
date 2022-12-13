@@ -1,7 +1,14 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Validate,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../../domain/enum/role.enum';
 import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import { IsValidCoin } from 'src/infrastructure/validators/is-valid-coin.validator';
 
 export class CreateUserDto implements CreateUserInterface {
   @IsNotEmpty()
@@ -16,6 +23,7 @@ export class CreateUserDto implements CreateUserInterface {
   public password: string;
 
   @IsNumber()
+  @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
   @ApiProperty({ description: 'Number of deposit amount', example: 100 })
   public deposit: number;
 

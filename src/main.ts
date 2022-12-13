@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -6,6 +7,7 @@ import { EntityNotFoundExceptionFilter } from './infrastructure/filters/entity-n
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
