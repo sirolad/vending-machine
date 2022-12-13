@@ -1,11 +1,12 @@
 import { Role } from './enum/role.enum';
+import { CreateUserInterface } from './interfaces/create-user.interface';
 
-export class User {
+export class User implements CreateUserInterface {
   public username: string;
 
-  private password: string;
+  public password: string;
 
   public deposit: number;
 
-  public role: Role[];
+  public role: Role;
 }

@@ -1,7 +1,8 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../../domain/enum/role.enum';
 import { Product } from './product.entity';
-@Entity()
+
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
