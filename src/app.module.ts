@@ -8,6 +8,9 @@ import { UserRepository } from './infrastructure/repository/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './infrastructure/database/entity/user.entity';
 import { Product } from './infrastructure/database/entity/product.entity';
+import { ProductService } from './application/services/product.service';
+import { ProductRepository } from './infrastructure/repository/product.repository';
+import { ProductController } from './handler/controllers/product.controller';
 
 @Module({
   imports: [
@@ -27,12 +30,17 @@ import { Product } from './infrastructure/database/entity/product.entity';
     }),
     DatabaseModule,
   ],
-  controllers: [UserController],
+  controllers: [UserController, ProductController],
   providers: [
     UserService,
+    ProductService,
     {
       provide: 'UserInterface',
       useClass: UserRepository,
+    },
+    {
+      provide: 'ProductInterface',
+      useClass: ProductRepository,
     },
   ],
 })

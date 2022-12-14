@@ -14,19 +14,19 @@ export class UserService {
     return this.userInterface.createUser(createUser);
   }
 
-  findAll() {
+  async findAll() {
     return this.userInterface.getAllUsers();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.userInterface.getOneUser(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserInterface) {
+  async update(id: number, updateUserDto: UpdateUserInterface) {
     return this.userInterface.updateUser(id, updateUserDto);
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.userInterface.removeUser(id);
   }
 }

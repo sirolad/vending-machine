@@ -4,7 +4,7 @@ import { Product } from './product.entity';
 import { IsNumber, Validate } from 'class-validator';
 import { IsValidCoin } from '../../validators/is-valid-coin.validator';
 
-@Entity('user')
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -23,6 +23,6 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.Buyer })
   role: Role;
 
-  @OneToMany(() => Product, (product) => product.user)
+  @OneToMany(() => Product, (product) => product.sellerId)
   products: Product[];
 }
