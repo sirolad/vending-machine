@@ -3,6 +3,9 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  Matches,
+  MaxLength,
+  MinLength,
   Validate,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -19,6 +22,11 @@ export class CreateUserDto implements CreateUserInterface {
   public username: string;
 
   @IsString()
+  @MinLength(6)
+  @MaxLength(20)
+  @Matches(/((?=.*\d)|(?=.*\w+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'Password too weak',
+  })
   @ApiProperty({ description: 'Password of the user', example: '*******' })
   public password: string;
 

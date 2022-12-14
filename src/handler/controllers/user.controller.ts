@@ -10,7 +10,7 @@ import {
 import { UserService } from '../../application/services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
@@ -28,6 +28,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @ApiNotFoundResponse({ description: 'User Not Found' })
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
