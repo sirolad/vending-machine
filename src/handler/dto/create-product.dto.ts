@@ -1,7 +1,8 @@
 import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../domain/user';
+import { IsMultipleFive } from 'src/infrastructure/validators/is-multiple-5.validator';
 
 export class CreateProductDto implements CreateProductInterface {
   @IsNotEmpty()
@@ -13,6 +14,7 @@ export class CreateProductDto implements CreateProductInterface {
   public amountAvailable: number;
 
   @IsNumber()
+  @Validate(IsMultipleFive, { message: 'Cost should be a multiple of 5' })
   @ApiProperty({
     description: 'The cost of product (Multiples of 5 only)',
     example: 200,
