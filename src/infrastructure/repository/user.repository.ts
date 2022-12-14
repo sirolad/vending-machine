@@ -5,7 +5,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
 import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
-import * as bcrypt from 'bcrypt';
+import { hashPassword } from '../helper/hash.helper';
 
 @Injectable()
 export class UserRepository implements UserInterface {
@@ -17,9 +17,10 @@ export class UserRepository implements UserInterface {
   async createUser(
     createUserDto: CreateUserInterface,
   ): Promise<CreateUserInterface> {
-    const { password } = { ...createUserDto };
-    const hash = await bcrypt.hash(password, 10);
-    const newUser = Object.assign({}, createUserDto, { password: hash });
+    const hashedPassword = await hashPassword(createUserDto.password);
+    const newUser = Object.assign({}, createUserDto, {
+      password: hashedPassword,
+    });
     const user = this.ormRepository.create(newUser);
 
     return this.ormRepository.save(user);
@@ -37,7 +38,11 @@ export class UserRepository implements UserInterface {
     id: number,
     user: UpdateUserInterface,
   ): Promise<CreateUserInterface> {
-    await this.ormRepository.update(id, user);
+    const hashedPassword = await hashPassword(user.password);
+    const newUpdatedUser = Object.assign({}, user, {
+      password: hashedPassword,
+    });
+    await this.ormRepository.update(id, newUpdatedUser);
 
     return this.getOneUser(id);
   }

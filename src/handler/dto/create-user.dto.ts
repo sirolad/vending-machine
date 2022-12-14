@@ -27,7 +27,7 @@ export class CreateUserDto implements CreateUserInterface {
   @Matches(/((?=.*\d)|(?=.*\w+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message: 'Password too weak',
   })
-  @ApiProperty({ description: 'Password of the user', example: '*******' })
+  @ApiProperty({ description: 'Password of the user', example: 'Secrets' })
   public password: string;
 
   @IsNumber()
