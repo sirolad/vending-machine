@@ -11,6 +11,7 @@ import { Product } from './infrastructure/database/entity/product.entity';
 import { ProductService } from './application/services/product.service';
 import { ProductRepository } from './infrastructure/repository/product.repository';
 import { ProductController } from './handler/controllers/product.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [

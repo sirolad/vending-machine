@@ -5,6 +5,7 @@ import { DeleteResult, Repository } from 'typeorm';
 import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
 import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserRepository implements UserInterface {
@@ -16,7 +17,10 @@ export class UserRepository implements UserInterface {
   async createUser(
     createUserDto: CreateUserInterface,
   ): Promise<CreateUserInterface> {
-    const user = this.ormRepository.create(createUserDto);
+    const { password } = { ...createUserDto };
+    const hash = await bcrypt.hash(password, 10);
+    const newUser = Object.assign({}, createUserDto, { password: hash });
+    const user = this.ormRepository.create(newUser);
 
     return this.ormRepository.save(user);
   }
