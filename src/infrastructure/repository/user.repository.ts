@@ -53,6 +53,6 @@ export class UserRepository implements UserInterface {
   }
 
   async findByUsername(username: string): Promise<CreateUserInterface> {
-    return this.ormRepository.findOne({ where: { username } });
+    return this.ormRepository.findOneOrFail({ where: { username } });
   }
 }
