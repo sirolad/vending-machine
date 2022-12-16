@@ -2,19 +2,15 @@ import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDto } from '../handler/dto/login.dto';
-import { JwtStrategy } from './jwt.strategy';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly strategy: JwtStrategy,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('/login')
   async login(@Body() loginDto: LoginDto) {
-    const user = await this.strategy.validate(
+    const user = await this.authService.validateUser(
       loginDto.username,
       loginDto.password,
     );

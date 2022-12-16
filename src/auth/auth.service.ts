@@ -13,11 +13,10 @@ export class AuthService {
 
   async validateUser(
     username: string,
-    pass: string,
+    password: string,
   ): Promise<CreateUserInterface | null> {
     const user = await this.usersService.findByUsername(username);
-    if (user && (await isValidPassword(pass, user.password))) {
-      //const { password, ...result } = user;
+    if (user && (await isValidPassword(password, user.password))) {
       return user;
     }
     return null;
@@ -28,5 +27,13 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async validatePayload(payload: any) {
+    const user = await this.usersService.findByUsername(payload['username']);
+    if (user) {
+      return user;
+    }
+    return null;
   }
 }

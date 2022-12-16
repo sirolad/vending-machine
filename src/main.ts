@@ -11,7 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
-    .addBasicAuth()
+    .addBearerAuth()
     .setTitle('Vending Machine API')
     .setDescription('Vending Machine API documentation')
     .setVersion('1.0')
