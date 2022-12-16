@@ -11,7 +11,7 @@ export class UserService {
     private readonly userInterface: UserInterface,
   ) {}
 
-  async create(createUser: CreateUserInterface) {
+  async create(createUser: CreateUserInterface): Promise<CreateUserInterface> {
     return this.userInterface.createUser(createUser);
   }
 
