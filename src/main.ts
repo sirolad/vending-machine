@@ -3,16 +3,16 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { EntityNotFoundExceptionFilter } from './infrastructure/filters/entity-not-found-exception.filter';
-import { RolesGuard } from './handler/guards/roles.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
+  app.enableCors();
 
   const options = new DocumentBuilder()
-    .addBearerAuth()
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
     .setTitle('Vending Machine API')
     .setDescription('Vending Machine API documentation')
     .setVersion('1.0')

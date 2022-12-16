@@ -9,18 +9,18 @@ import {
   UseGuards,
   ClassSerializerInterceptor,
   UseInterceptors,
-  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CreatedUserDto } from '../dto/created-user.dto';
 import { Roles } from '../roles.decorator';
 import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
@@ -33,6 +33,7 @@ export class UserController {
   }
 
   @Get()
+  @Roles('admin', 'buyer', 'seller')
   async findAll(): Promise<CreatedUserDto[]> {
     const users = await this.userService.findAll();
     return users.map((user) => UserController.mapUserToCreatedUser(user));
@@ -46,7 +47,7 @@ export class UserController {
     return UserController.mapUserToCreatedUser(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Roles('admin', 'buyer', 'seller')
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.userService.update(+id, updateUserDto);
