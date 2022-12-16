@@ -12,6 +12,11 @@ import { ProductService } from './application/services/product.service';
 import { ProductRepository } from './infrastructure/repository/product.repository';
 import { ProductController } from './handler/controllers/product.controller';
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './handler/guards/roles.guard';
+import { JwtService } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -36,6 +41,9 @@ import { AuthModule } from './auth/auth.module';
   providers: [
     UserService,
     ProductService,
+    JwtService,
+    JwtStrategy,
+    AuthService,
     {
       provide: 'UserInterface',
       useClass: UserRepository,
@@ -43,6 +51,10 @@ import { AuthModule } from './auth/auth.module';
     {
       provide: 'ProductInterface',
       useClass: ProductRepository,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

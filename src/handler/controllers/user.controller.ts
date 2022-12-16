@@ -9,6 +9,7 @@ import {
   UseGuards,
   ClassSerializerInterceptor,
   UseInterceptors,
+  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -16,6 +17,8 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { CreatedUserDto } from '../dto/created-user.dto';
+import { Roles } from '../roles.decorator';
+import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -29,15 +32,14 @@ export class UserController {
     return UserController.mapUserToCreatedUser(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get()
   async findAll(): Promise<CreatedUserDto[]> {
     const users = await this.userService.findAll();
     return users.map((user) => UserController.mapUserToCreatedUser(user));
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
+  @Roles('buyer')
   @ApiNotFoundResponse({ description: 'User Not Found' })
   async findOne(@Param('id') id: string): Promise<CreatedUserDto> {
     const user = await this.userService.findOne(+id);
