@@ -30,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
       }),
     }),
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [UserController, ProductController],
   providers: [

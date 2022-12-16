@@ -7,4 +7,5 @@ export interface UserInterface {
   getOneUser(id: number): Promise<User>;
   updateUser(id: number, user: UpdateUserInterface): Promise<User>;
   removeUser(id: number): Promise<any>;
+  findByUsername(username: string): Promise<User>;
 }

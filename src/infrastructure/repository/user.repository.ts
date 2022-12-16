@@ -51,4 +51,8 @@ export class UserRepository implements UserInterface {
     await this.getOneUser(id);
     return this.ormRepository.delete(id);
   }
+
+  async findByUsername(username: string): Promise<CreateUserInterface> {
+    return this.ormRepository.findOne({ where: { username } });
+  }
 }
