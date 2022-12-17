@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   ClassSerializerInterceptor,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,10 +13,8 @@ import { UserService } from '../../application/services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import { CreatedUserDto } from '../dto/created-user.dto';
 import { Roles } from '../roles.decorator';
-import { RolesGuard } from '../guards/roles.guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -55,7 +52,7 @@ export class UserController {
     return UserController.mapUserToCreatedUser(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Roles('admin', 'buyer', 'seller')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
@@ -63,6 +60,7 @@ export class UserController {
 
   private static mapUserToCreatedUser(user: CreateUserDto) {
     return new CreatedUserDto(
+      user.id,
       user.username,
       user.password,
       user.deposit,

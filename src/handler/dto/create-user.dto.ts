@@ -14,6 +14,7 @@ import { CreateUserInterface } from '../../domain/interfaces/create-user.interfa
 import { IsValidCoin } from 'src/infrastructure/validators/is-valid-coin.validator';
 
 export class CreateUserDto implements CreateUserInterface {
+  public id?: number;
   @IsNotEmpty()
   @ApiProperty({
     description: 'Name of the user',
@@ -42,7 +43,14 @@ export class CreateUserDto implements CreateUserInterface {
   })
   public role: Role;
 
-  constructor(username: string, password: string, deposit: number, role: Role) {
+  constructor(
+    id: number,
+    username: string,
+    password: string,
+    deposit: number,
+    role: Role,
+  ) {
+    this.id = id;
     this.username = username;
     this.password = password;
     this.deposit = deposit;
