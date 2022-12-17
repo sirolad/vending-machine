@@ -8,6 +8,8 @@ import {
   Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -25,7 +27,15 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<CreatedUserDto> {
-    const user = await this.userService.create(createUserDto);
+    const user = await this.userService.create(createUserDto).catch((err) => {
+      throw new HttpException(
+        {
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    });
+
     return UserController.mapUserToCreatedUser(user);
   }
 
