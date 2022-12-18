@@ -7,6 +7,4 @@ export class Product implements CreateProductInterface {
   public cost: number;
 
   public name: string;
-
-  public sellerId: User;
 }

@@ -29,23 +29,9 @@ export class CreateProductDto implements CreateProductInterface {
   })
   public name: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty({
-    description: 'Id of Seller',
-    example: 1,
-  })
-  public sellerId: User;
-
-  constructor(
-    amountAvailable: number,
-    cost: number,
-    name: string,
-    sellerId: User,
-  ) {
+  constructor(amountAvailable: number, cost: number, name: string) {
     this.amountAvailable = amountAvailable;
     this.cost = cost;
     this.name = name;
-    this.sellerId = sellerId;
   }
 }

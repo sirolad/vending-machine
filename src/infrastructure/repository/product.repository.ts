@@ -1,22 +1,33 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Product } from '../database/entity/product.entity';
 import { ProductInterface } from '../../domain/interfaces/product.interface';
 import { UpdateProductInterface } from '../../domain/interfaces/update-product.interface';
 import { CreateProductInterface } from 'src/domain/interfaces/create-product.interface';
+import { JwtStrategy } from '../../auth/jwt.strategy';
 
 @Injectable()
 export class ProductRepository implements ProductInterface {
   constructor(
     @InjectRepository(Product)
     private readonly ormRepository: Repository<Product>,
+    private readonly jwtStrategy: JwtStrategy,
   ) {}
 
   async createProduct(
     createProduct: CreateProductInterface,
+    headers,
   ): Promise<CreateProductInterface> {
-    const product = this.ormRepository.create(createProduct);
+    const user = await this.jwtStrategy.getUserFromToken(
+      headers['authorization'],
+    );
+
+    const productWithSeller = Object.assign({}, createProduct, {
+      sellerId: user.id,
+    }) as CreateProductInterface;
+
+    const product = this.ormRepository.create(productWithSeller);
 
     return this.ormRepository.save(product);
   }

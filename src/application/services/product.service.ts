@@ -11,8 +11,8 @@ export class ProductService {
     private readonly productInterface: ProductInterface,
   ) {}
 
-  async create(createProduct: CreateProductInterface) {
-    return this.productInterface.createProduct(createProduct);
+  async create(createProduct: CreateProductInterface, headers) {
+    return this.productInterface.createProduct(createProduct, headers);
   }
 
   async findAll(): Promise<CreateProductInterface[]> {

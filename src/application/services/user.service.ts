@@ -23,12 +23,16 @@ export class UserService {
     return this.userInterface.getOneUser(id);
   }
 
-  async update(id: number, updateUserDto: UpdateUserInterface) {
-    return this.userInterface.updateUser(id, updateUserDto);
+  async update(
+    id: number,
+    updateUserDto: UpdateUserInterface,
+    user: CreateUserInterface,
+  ) {
+    return this.userInterface.updateUser(id, updateUserDto, user);
   }
 
-  async remove(id: number) {
-    return this.userInterface.removeUser(id);
+  async remove(id: number, user: CreateUserInterface) {
+    return this.userInterface.removeUser(id, user);
   }
 
   async findByUsername(username: string): Promise<User> {

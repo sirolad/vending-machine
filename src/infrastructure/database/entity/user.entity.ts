@@ -7,7 +7,7 @@ import { IsValidCoin } from '../../validators/is-valid-coin.validator';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ type: 'varchar', unique: true })
   username: string;
@@ -24,5 +24,5 @@ export class User {
   role: Role;
 
   @OneToMany(() => Product, (product) => product.sellerId)
-  products: Product[];
+  products?: Product[];
 }

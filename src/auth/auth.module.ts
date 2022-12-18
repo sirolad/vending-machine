@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { UserService } from '../application/services/user.service';
 import { UserRepository } from '../infrastructure/repository/user.repository';
@@ -24,6 +24,8 @@ import { ConfigModule } from '@nestjs/config';
     UserService,
     AuthService,
     JwtStrategy,
+    JwtService,
+    CaslAbilityFactory,
     {
       provide: 'UserInterface',
       useClass: UserRepository,

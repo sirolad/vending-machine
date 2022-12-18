@@ -6,9 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  ConflictException,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from 'src/application/services/product.service';
@@ -25,15 +25,17 @@ export class ProductController {
 
   @Post()
   @Roles(Role.Seller)
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto).catch((err) => {
-      throw new HttpException(
-        {
-          message: err.message,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    });
+  create(@Body() createProductDto: CreateProductDto, @Req() request: Request) {
+    return this.productService
+      .create(createProductDto, request.headers)
+      .catch((err) => {
+        throw new HttpException(
+          {
+            message: err.message,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      });
   }
 
   @Get()
@@ -51,7 +53,14 @@ export class ProductController {
   @Patch(':id')
   @Roles(Role.Admin, Role.Seller)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateProductDto) {
-    return this.productService.update(+id, updateUserDto);
+    return this.productService.update(+id, updateUserDto).catch((err) => {
+      throw new HttpException(
+        {
+          message: err.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    });
   }
 
   @Delete(':id')

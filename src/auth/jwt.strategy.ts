@@ -13,11 +13,15 @@ export interface JwtPayload {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService,
+    private readonly config: ConfigService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false, //change to false
-      secretOrKey: process.env.JWT_SECRET,
+      ignoreExpiration: false,
+      secretOrKey: config.get<string>('JWT_SECRET'),
     });
   }
 
@@ -26,6 +30,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
+
     return user;
+  }
+
+  async getUserFromToken(token: string): Promise<CreateUserInterface | null> {
+    const jwt = token.replace('Bearer ', '');
+
+    const decoded = (await this.jwtService.decode(jwt)) as JwtPayload;
+    if (Object.keys(decoded).length === 0) return null;
+
+    return this.validate(decoded);
   }
 }

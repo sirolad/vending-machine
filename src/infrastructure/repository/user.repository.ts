@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../database/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
@@ -6,12 +6,17 @@ import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
 import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
 import { hashPassword } from '../helper/hash.helper';
+import {
+  Action,
+  CaslAbilityFactory,
+} from '../casl/casl-ability.factory/casl-ability.factory';
 
 @Injectable()
 export class UserRepository implements UserInterface {
   constructor(
     @InjectRepository(User)
     private readonly ormRepository: Repository<User>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   async createUser(
@@ -36,20 +41,37 @@ export class UserRepository implements UserInterface {
 
   async updateUser(
     id: number,
-    user: UpdateUserInterface,
+    userDto: UpdateUserInterface,
+    user: CreateUserInterface,
   ): Promise<CreateUserInterface> {
-    const hashedPassword = await hashPassword(user.password);
-    const newUpdatedUser = Object.assign({}, user, {
-      password: hashedPassword,
-    });
-    await this.ormRepository.update(id, newUpdatedUser);
+    const ability = this.caslAbilityFactory.createForUser(user);
+    const checked = await this.getOneUser(id);
 
-    return this.getOneUser(id);
+    if (ability.can(Action.Update, checked)) {
+      const hashedPassword = await hashPassword(userDto.password);
+      const newUpdatedUser = Object.assign({}, userDto, {
+        password: hashedPassword,
+      });
+      await this.ormRepository.update(id, newUpdatedUser);
+
+      return this.getOneUser(id);
+    }
+
+    throw new UnauthorizedException();
   }
 
-  async removeUser(id: number): Promise<DeleteResult> {
-    await this.getOneUser(id);
-    return this.ormRepository.delete(id);
+  async removeUser(
+    id: number,
+    user: CreateUserInterface,
+  ): Promise<DeleteResult> {
+    const ability = this.caslAbilityFactory.createForUser(user);
+    const checked = await this.getOneUser(id);
+
+    if (ability.can(Action.Delete, checked)) {
+      return this.ormRepository.delete(id);
+    }
+
+    throw new UnauthorizedException();
   }
 
   async findByUsername(username: string): Promise<CreateUserInterface> {

@@ -17,6 +17,7 @@ import { RolesGuard } from './handler/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { AuthService } from './auth/auth.service';
+import { CaslModule } from './infrastructure/casl/casl.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthService } from './auth/auth.service';
     }),
     DatabaseModule,
     AuthModule,
+    CaslModule,
   ],
   controllers: [UserController, ProductController],
   providers: [
