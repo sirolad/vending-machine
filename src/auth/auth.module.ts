@@ -9,6 +9,8 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../infrastructure/database/entity/user.entity';
 import { ConfigModule } from '@nestjs/config';
+import { CaslAbilityFactory } from '../infrastructure/casl/casl-ability.factory/casl-ability.factory';
+import { ProductRepository } from '../infrastructure/repository/product.repository';
 
 @Module({
   imports: [
