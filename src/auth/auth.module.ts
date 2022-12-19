@@ -8,17 +8,21 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../infrastructure/database/entity/user.entity';
-import { ConfigModule } from '@nestjs/config';
 import { CaslAbilityFactory } from '../infrastructure/casl/casl-ability.factory/casl-ability.factory';
-import { ProductRepository } from '../infrastructure/repository/product.repository';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.APP_EXPIRES },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          secret: 'StrongKey',
+          signOptions: { expiresIn: configService.get<string>('APP_EXPIRES') },
+        };
+      },
     }),
     TypeOrmModule.forFeature([User]),
   ],
@@ -26,7 +30,6 @@ import { ProductRepository } from '../infrastructure/repository/product.reposito
     UserService,
     AuthService,
     JwtStrategy,
-    JwtService,
     CaslAbilityFactory,
     {
       provide: 'UserInterface',

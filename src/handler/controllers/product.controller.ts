@@ -8,7 +8,7 @@ import {
   Delete,
   HttpException,
   HttpStatus,
-  Req,
+  Headers,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from 'src/application/services/product.service';
@@ -25,9 +25,9 @@ export class ProductController {
 
   @Post()
   @Roles(Role.Seller)
-  create(@Body() createProductDto: CreateProductDto, @Req() request: Request) {
+  create(@Body() createProductDto: CreateProductDto, @Headers() headers) {
     return this.productService
-      .create(createProductDto, request.headers)
+      .create(createProductDto, headers.user)
       .catch((err) => {
         throw new HttpException(
           {
