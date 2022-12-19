@@ -10,12 +10,12 @@ import { User } from './infrastructure/database/entity/user.entity';
 import { Product } from './infrastructure/database/entity/product.entity';
 import { ProductRepository } from './infrastructure/repository/product.repository';
 import { ProductController } from './handler/controllers/product.controller';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './infrastructure/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './handler/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
-import { JwtStrategy } from './auth/jwt.strategy';
-import { AuthService } from './auth/auth.service';
+import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
+import { AuthService } from './infrastructure/auth/auth.service';
 import { CaslModule } from './infrastructure/casl/casl.module';
 
 @Module({

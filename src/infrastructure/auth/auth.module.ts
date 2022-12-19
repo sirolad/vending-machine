@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { UserService } from '../application/services';
-import { UserRepository } from '../infrastructure/repository/user.repository';
+import { UserService } from '../../application/services';
+import { UserRepository } from '../repository/user.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../infrastructure/database/entity/user.entity';
-import { UserAbilityFactory } from '../infrastructure/casl/casl-ability.factory/user-ability.factory';
+import { User } from '../database/entity/user.entity';
+import { UserAbilityFactory } from '../casl/casl-ability.factory/user-ability.factory';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
