@@ -23,8 +23,12 @@ export class ProductAbilityFactory {
       Ability as AbilityClass<AppAbility>,
     );
 
-    can(Action.Update, Product, { user: user.id });
-    can(Action.Delete, Product, { user: user.id });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    can(Action.Update, Product, { 'user.id': user.id });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    can(Action.Delete, Product, { 'user.id': user.id });
 
     return build({
       detectSubjectType: (item) =>

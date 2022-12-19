@@ -16,6 +16,8 @@ import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { Roles } from '../roles.decorator';
 import { Role } from '../../domain/enum/role.enum';
+import { CreatedProductDto } from '../dto/created-product.dto';
+import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
 
 @ApiTags('products')
 @ApiBearerAuth()
@@ -39,23 +41,27 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll() {
+    const products = await this.productService.findAll();
+    return products.map((product) =>
+      ProductController.mapProductToCreatedProduct(product),
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const product = await this.productService.findOne(+id);
+    return ProductController.mapProductToCreatedProduct(product);
   }
 
   @Patch(':id')
-  @Roles(Role.Admin, Role.Seller, Role.Buyer)
-  update(
+  @Roles(Role.Admin, Role.Seller)
+  async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateProductDto,
     @Headers() headers,
   ) {
-    return this.productService
+    const product = await this.productService
       .update(+id, updateUserDto, headers.user)
       .catch((err) => {
         throw new HttpException(
@@ -65,11 +71,25 @@ export class ProductController {
           HttpStatus.BAD_REQUEST,
         );
       });
+
+    return ProductController.mapProductToCreatedProduct(product);
   }
 
   @Delete(':id')
-  @Roles(Role.Admin, Role.Seller, Role.Buyer)
-  remove(@Param('id') id: string) {
-    return this.productService.remove(+id);
+  @Roles(Role.Admin, Role.Seller)
+  async remove(@Param('id') id: string, @Headers() headers) {
+    return this.productService.remove(+id, headers.user);
+  }
+
+  private static mapProductToCreatedProduct(
+    product: CreateProductInterface,
+  ): CreatedProductDto {
+    return new CreatedProductDto(
+      product.id,
+      product.amountAvailable,
+      product.cost,
+      product.name,
+      product.user.id,
+    );
   }
 }

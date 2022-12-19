@@ -32,7 +32,7 @@ export class ProductService {
     return this.productInterface.updateProduct(id, updateProductDto, user);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.productInterface.removeProduct(id);
+  async remove(id: number, user: CreateUserInterface): Promise<void> {
+    await this.productInterface.removeProduct(id, user);
   }
 }

@@ -9,5 +9,7 @@ export interface CreateProductInterface {
 
   name: string;
 
-  user?: User | number;
+  user?: User;
+
+  sellerId?: number;
 }

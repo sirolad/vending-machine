@@ -24,5 +24,5 @@ export class Product {
 
   @ManyToOne(() => User, (user) => user.products, { cascade: true })
   @JoinColumn({ name: 'seller_id' })
-  user?: User | number;
+  user?: User;
 }

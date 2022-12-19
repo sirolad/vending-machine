@@ -41,7 +41,7 @@ export class ProductRepository implements ProductInterface {
   }
 
   async getOneProduct(id: number): Promise<CreateProductInterface> {
-    return this.ormRepository.findOneOrFail({
+    return this.ormRepository.findOne({
       where: { id },
       relations: {
         user: true,
@@ -49,9 +49,16 @@ export class ProductRepository implements ProductInterface {
     });
   }
 
-  async removeProduct(id: number): Promise<DeleteResult> {
-    await this.getOneProduct(id);
-    return this.ormRepository.delete(id);
+  async removeProduct(
+    id: number,
+    user: CreateUserInterface,
+  ): Promise<DeleteResult> {
+    const ability = await this.productAbilityFactory.createForUser(user);
+    const checkedProduct = await this.getOneProduct(id);
+
+    if (ability.can(Action.Delete, checkedProduct)) {
+      return this.ormRepository.delete(id);
+    }
   }
 
   async updateProduct(
@@ -59,8 +66,7 @@ export class ProductRepository implements ProductInterface {
     product: UpdateProductInterface,
     user: CreateUserInterface,
   ): Promise<CreateProductInterface> {
-    console.log(user);
-    const ability = this.productAbilityFactory.createForUser(user);
+    const ability = await this.productAbilityFactory.createForUser(user);
     const checkedProduct = await this.getOneProduct(id);
 
     if (ability.can(Action.Update, checkedProduct)) {

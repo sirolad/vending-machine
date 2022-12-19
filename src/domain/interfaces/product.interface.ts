@@ -11,5 +11,5 @@ export interface ProductInterface {
     product: UpdateProductInterface,
     user: User,
   ): Promise<Product>;
-  removeProduct(id: number): Promise<any>;
+  removeProduct(id: number, user: User): Promise<any>;
 }

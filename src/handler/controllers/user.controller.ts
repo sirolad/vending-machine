@@ -76,11 +76,11 @@ export class UserController {
 
   @Roles('admin', 'buyer', 'seller')
   @Delete(':id')
-  remove(@Param('id') id: string, @Headers() headers) {
+  async remove(@Param('id') id: string, @Headers() headers) {
     return this.userService.remove(+id, headers.user);
   }
 
-  private static mapUserToCreatedUser(user: CreateUserDto) {
+  private static mapUserToCreatedUser(user: CreateUserDto): CreatedUserDto {
     return new CreatedUserDto(
       user.id,
       user.username,
