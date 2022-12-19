@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserInterface } from '../../domain/interfaces/user/UserInterface';
+import { UserInterface } from '../../domain/interfaces/user/user.interface';
 import { CreateUserInterface } from 'src/domain/interfaces/user/create-user.interface';
 import { UpdateUserInterface } from '../../domain/interfaces/user/update-user.interface';
 import { User } from '../../domain/user';

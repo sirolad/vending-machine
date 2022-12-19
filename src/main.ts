@@ -2,8 +2,10 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { EntityNotFoundExceptionFilter } from './infrastructure/filters/entity-not-found-exception.filter';
-import { HttpExceptionFilter } from './infrastructure/filters/http-exception.filter';
+import {
+  EntityNotFoundExceptionFilter,
+  HttpExceptionFilter,
+} from './infrastructure/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

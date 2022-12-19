@@ -2,18 +2,22 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { Product } from '../database/entity/product.entity';
-import { ProductInterface } from '../../domain/interfaces/product/product.interface';
-import { UpdateProductInterface } from '../../domain/interfaces/product/update-product.interface';
-import { CreateProductInterface } from 'src/domain/interfaces/product/create-product.interface';
-import { CreateUserInterface } from '../../domain/interfaces/user/create-user.interface';
+import {
+  ProductInterface,
+  UpdateProductInterface,
+  CreateProductInterface,
+  PurchaseResponseInterface,
+} from '../../domain/interfaces/product';
+import { CreateUserInterface } from '../../domain/interfaces/user';
 import {
   Action,
   ProductAbilityFactory,
 } from '../casl/casl-ability.factory/product-ability.factory';
-import { PurchaseInterface } from '../../domain/interfaces/product/purchase.interface';
-import { InsufficientStockException } from '../../domain/exceptions/Insufficient-stock.exception';
-import { InsufficientFundsException } from '../../domain/exceptions/insufficient-fund.exceptions';
-import { PurchaseResponseInterface } from '../../domain/interfaces/product/purchase-response.interface';
+import { PurchaseInterface } from '../../domain/interfaces/product';
+import {
+  InsufficientStockException,
+  InsufficientFundsException,
+} from '../../domain/exceptions';
 import { User } from '../database/entity/user.entity';
 
 @Injectable()

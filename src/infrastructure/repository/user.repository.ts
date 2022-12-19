@@ -2,15 +2,17 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../database/entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { UserInterface } from '../../domain/interfaces/user/UserInterface';
-import { CreateUserInterface } from 'src/domain/interfaces/user/create-user.interface';
-import { UpdateUserInterface } from '../../domain/interfaces/user/update-user.interface';
+import {
+  UserInterface,
+  CreateUserInterface,
+  UpdateUserInterface,
+} from '../../domain/interfaces/user';
 import { hashPassword } from '../helper/hash.helper';
 import {
   Action,
   UserAbilityFactory,
 } from '../casl/casl-ability.factory/user-ability.factory';
-import { CreateDepositInterface } from '../../domain/interfaces/user/create-deposit.interface';
+import { CreateDepositInterface } from '../../domain/interfaces/user';
 
 @Injectable()
 export class UserRepository implements UserInterface {
