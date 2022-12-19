@@ -39,19 +39,17 @@ export class ProductController {
   }
 
   @Get()
-  @Roles(Role.Admin, Role.Seller)
   findAll() {
     return this.productService.findAll();
   }
 
   @Get(':id')
-  @Roles(Role.Admin, Role.Seller)
   findOne(@Param('id') id: string) {
     return this.productService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles(Role.Admin, Role.Seller)
+  @Roles(Role.Admin, Role.Seller, Role.Buyer)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateProductDto) {
     return this.productService.update(+id, updateUserDto).catch((err) => {
       throw new HttpException(
@@ -64,7 +62,7 @@ export class ProductController {
   }
 
   @Delete(':id')
-  @Roles(Role.Admin, Role.Seller)
+  @Roles(Role.Admin, Role.Seller, Role.Buyer)
   remove(@Param('id') id: string) {
     return this.productService.remove(+id);
   }

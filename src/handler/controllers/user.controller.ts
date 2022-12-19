@@ -45,14 +45,12 @@ export class UserController {
   }
 
   @Get()
-  @Roles('admin', 'buyer', 'seller')
   async findAll(): Promise<CreatedUserDto[]> {
     const users = await this.userService.findAll();
     return users.map((user) => UserController.mapUserToCreatedUser(user));
   }
 
   @Get(':id')
-  @Roles('buyer')
   @ApiNotFoundResponse({ description: 'User Not Found' })
   async findOne(@Param('id') id: string): Promise<CreatedUserDto> {
     const user = await this.userService.findOne(+id);
