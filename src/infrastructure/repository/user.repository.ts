@@ -10,6 +10,7 @@ import {
   Action,
   UserAbilityFactory,
 } from '../casl/casl-ability.factory/user-ability.factory';
+import { CreateDepositInterface } from '../../domain/interfaces/create-deposit.interface';
 
 @Injectable()
 export class UserRepository implements UserInterface {
@@ -76,5 +77,20 @@ export class UserRepository implements UserInterface {
 
   async findByUsername(username: string): Promise<CreateUserInterface> {
     return this.ormRepository.findOneOrFail({ where: { username } });
+  }
+
+  async depositAmount(
+    amount: CreateDepositInterface,
+    user: CreateUserInterface,
+  ): Promise<CreateUserInterface> {
+    user.deposit += amount.deposit;
+    return this.ormRepository.save(user);
+  }
+
+  async resetDepositAmount(
+    user: CreateUserInterface,
+  ): Promise<CreateUserInterface> {
+    user.deposit = 0;
+    return this.ormRepository.save(user);
   }
 }

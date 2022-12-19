@@ -31,11 +31,6 @@ export class CreateUserDto implements CreateUserInterface {
   @ApiProperty({ description: 'Password of the user', example: 'Secrets' })
   public password: string;
 
-  // @IsNumber()
-  // @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
-  // @ApiProperty({ description: 'Number of deposit amount', example: 100 })
-  // public deposit: number;
-
   @IsEnum(Role)
   @ApiProperty({
     description: 'User Role',

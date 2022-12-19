@@ -19,6 +19,8 @@ import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { CreatedUserDto } from '../dto/created-user.dto';
 import { Roles } from '../roles.decorator';
 import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import { Role } from '../../domain/enum/role.enum';
+import { CreateDepositDto } from '../dto/create-deposit.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -75,10 +77,30 @@ export class UserController {
     return UserController.mapUserToCreatedUser(user);
   }
 
-  @Roles('admin', 'buyer', 'seller')
+  @Roles(Role.Admin, Role.Seller, Role.Buyer)
   @Delete(':id')
   async remove(@Param('id') id: string, @Headers() headers) {
     return this.userService.remove(+id, headers.user);
+  }
+
+  @Roles(Role.Buyer)
+  @Patch('/deposit')
+  async deposit(
+    @Body() createDeposit: CreateDepositDto,
+    @Headers() headers,
+  ): Promise<CreatedUserDto> {
+    const deposit = await this.userService.depositAmount(
+      createDeposit,
+      headers.user,
+    );
+
+    return UserController.mapUserToCreatedUser(deposit);
+  }
+
+  @Patch('/deposit/reset')
+  @Roles(Role.Buyer)
+  async resetDeposit(@Headers() headers) {
+    return this.userService.resetDeposit(headers.user);
   }
 
   private static mapUserToCreatedUser(

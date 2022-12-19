@@ -3,6 +3,7 @@ import { UserInterface } from '../../domain/interfaces/UserInterface';
 import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
 import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
 import { User } from '../../domain/user';
+import { CreateDepositInterface } from '../../domain/interfaces/create-deposit.interface';
 
 @Injectable()
 export class UserService {
@@ -37,5 +38,16 @@ export class UserService {
 
   async findByUsername(username: string): Promise<User> {
     return this.userInterface.findByUsername(username);
+  }
+
+  async depositAmount(
+    deposit: CreateDepositInterface,
+    user: CreateUserInterface,
+  ): Promise<User> {
+    return this.userInterface.depositAmount(deposit, user);
+  }
+
+  async resetDeposit(user: CreateUserInterface): Promise<User> {
+    return this.userInterface.resetDepositAmount(user);
   }
 }
