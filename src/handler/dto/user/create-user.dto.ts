@@ -9,8 +9,8 @@ import {
   Validate,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '../../domain/enum/role.enum';
-import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import { Role } from '../../../domain/enum/role.enum';
+import { CreateUserInterface } from '../../../domain/interfaces/user/create-user.interface';
 import { IsValidCoin } from 'src/infrastructure/validators/is-valid-coin.validator';
 
 export class CreateUserDto implements CreateUserInterface {

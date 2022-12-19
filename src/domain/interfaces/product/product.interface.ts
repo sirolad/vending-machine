@@ -1,6 +1,7 @@
-import { Product } from '../product';
+import { Product } from '../../product';
 import { UpdateProductInterface } from './update-product.interface';
-import { User } from '../user';
+import { User } from '../../user';
+import { PurchaseInterface } from './purchase.interface';
 
 export interface ProductInterface {
   createProduct(createProduct: Product, headers): Promise<Product>;
@@ -12,4 +13,5 @@ export interface ProductInterface {
     user: User,
   ): Promise<Product>;
   removeProduct(id: number, user: User): Promise<any>;
+  buyProduct(id: number, purchase: PurchaseInterface, user: User);
 }

@@ -1,4 +1,4 @@
-import { CreateProductInterface } from './interfaces/create-product.interface';
+import { CreateProductInterface } from './interfaces/product/create-product.interface';
 
 export class Product implements CreateProductInterface {
   public amountAvailable: number;

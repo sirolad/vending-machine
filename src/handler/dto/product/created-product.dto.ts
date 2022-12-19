@@ -1,4 +1,4 @@
-import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
+import { CreateProductInterface } from '../../../domain/interfaces/product/create-product.interface';
 
 export class CreatedProductDto implements CreateProductInterface {
   id: number;

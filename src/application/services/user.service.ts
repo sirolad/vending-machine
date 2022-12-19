@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserInterface } from '../../domain/interfaces/UserInterface';
-import { CreateUserInterface } from 'src/domain/interfaces/create-user.interface';
-import { UpdateUserInterface } from '../../domain/interfaces/update-user.interface';
+import { UserInterface } from '../../domain/interfaces/user/UserInterface';
+import { CreateUserInterface } from 'src/domain/interfaces/user/create-user.interface';
+import { UpdateUserInterface } from '../../domain/interfaces/user/update-user.interface';
 import { User } from '../../domain/user';
-import { CreateDepositInterface } from '../../domain/interfaces/create-deposit.interface';
+import { CreateDepositInterface } from '../../domain/interfaces/user/create-deposit.interface';
 
 @Injectable()
 export class UserService {

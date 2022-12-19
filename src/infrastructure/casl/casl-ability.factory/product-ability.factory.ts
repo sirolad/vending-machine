@@ -5,7 +5,7 @@ import {
   ExtractSubjectType,
   InferSubjects,
 } from '@casl/ability';
-import { CreateUserInterface } from '../../../domain/interfaces/create-user.interface';
+import { CreateUserInterface } from '../../../domain/interfaces/user/create-user.interface';
 import { User } from '../../database/entity/user.entity';
 import { Product } from '../../database/entity/product.entity';
 

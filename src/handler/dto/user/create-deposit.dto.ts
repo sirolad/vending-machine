@@ -1,7 +1,7 @@
 import { IsNumber, Validate } from 'class-validator';
-import { IsValidCoin } from '../../infrastructure/validators/is-valid-coin.validator';
+import { IsValidCoin } from '../../../infrastructure/validators/is-valid-coin.validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateDepositInterface } from '../../domain/interfaces/create-deposit.interface';
+import { CreateDepositInterface } from '../../../domain/interfaces/user/create-deposit.interface';
 
 export class CreateDepositDto implements CreateDepositInterface {
   @IsNumber()

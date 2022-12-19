@@ -1,5 +1,5 @@
 import { Role } from './enum/role.enum';
-import { CreateUserInterface } from './interfaces/create-user.interface';
+import { CreateUserInterface } from './interfaces/user/create-user.interface';
 
 export class User implements CreateUserInterface {
   public id?: number;

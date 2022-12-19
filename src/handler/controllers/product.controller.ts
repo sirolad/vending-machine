@@ -12,12 +12,13 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from 'src/application/services/product.service';
-import { CreateProductDto } from '../dto/create-product.dto';
-import { UpdateProductDto } from '../dto/update-product.dto';
+import { CreateProductDto } from '../dto/product/create-product.dto';
+import { UpdateProductDto } from '../dto/product/update-product.dto';
 import { Roles } from '../roles.decorator';
 import { Role } from '../../domain/enum/role.enum';
-import { CreatedProductDto } from '../dto/created-product.dto';
-import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
+import { CreatedProductDto } from '../dto/product/created-product.dto';
+import { CreateProductInterface } from '../../domain/interfaces/product/create-product.interface';
+import { PurchaseDto } from '../dto/product/purchase.dto';
 
 @ApiTags('products')
 @ApiBearerAuth()
@@ -41,7 +42,7 @@ export class ProductController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(): Promise<CreatedProductDto[]> {
     const products = await this.productService.findAll();
     return products.map((product) =>
       ProductController.mapProductToCreatedProduct(product),
@@ -49,7 +50,7 @@ export class ProductController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<CreatedProductDto> {
     const product = await this.productService.findOne(+id);
     return ProductController.mapProductToCreatedProduct(product);
   }
@@ -60,7 +61,7 @@ export class ProductController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateProductDto,
     @Headers() headers,
-  ) {
+  ): Promise<CreatedProductDto> {
     const product = await this.productService
       .update(+id, updateUserDto, headers.user)
       .catch((err) => {
@@ -79,6 +80,16 @@ export class ProductController {
   @Roles(Role.Admin, Role.Seller)
   async remove(@Param('id') id: string, @Headers() headers) {
     return this.productService.remove(+id, headers.user);
+  }
+
+  @Post(':id/buy')
+  @Roles(Role.Buyer)
+  async buyProduct(
+    @Param('id') id: string,
+    @Body() purchaseDto: PurchaseDto,
+    @Headers() headers,
+  ) {
+    return this.productService.buy(+id, purchaseDto, headers.user);
   }
 
   private static mapProductToCreatedProduct(

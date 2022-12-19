@@ -1,4 +1,4 @@
-import { User } from '../user';
+import { User } from '../../user';
 import { UpdateUserInterface } from './update-user.interface';
 import { CreateDepositInterface } from './create-deposit.interface';
 

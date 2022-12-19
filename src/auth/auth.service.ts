@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../application/services/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { isValidPassword } from '../infrastructure/helper/hash.helper';
-import { CreateUserInterface } from '../domain/interfaces/create-user.interface';
+import { CreateUserInterface } from '../domain/interfaces/user/create-user.interface';
 import { JwtPayload } from './jwt.strategy';
 
 @Injectable()

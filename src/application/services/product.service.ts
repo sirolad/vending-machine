@@ -1,9 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { ProductInterface } from '../../domain/interfaces/product.interface';
-import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
-import { UpdateProductInterface } from '../../domain/interfaces/update-product.interface';
-import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import { ProductInterface } from '../../domain/interfaces/product/product.interface';
+import { CreateProductInterface } from '../../domain/interfaces/product/create-product.interface';
+import { UpdateProductInterface } from '../../domain/interfaces/product/update-product.interface';
+import { CreateUserInterface } from '../../domain/interfaces/user/create-user.interface';
+import { PurchaseInterface } from '../../domain/interfaces/product/purchase.interface';
+import { PurchaseResponseInterface } from '../../domain/interfaces/product/purchase-response.interface';
 
 @Injectable()
 export class ProductService {
@@ -34,5 +36,13 @@ export class ProductService {
 
   async remove(id: number, user: CreateUserInterface): Promise<void> {
     await this.productInterface.removeProduct(id, user);
+  }
+
+  async buy(
+    id: number,
+    purchase: PurchaseInterface,
+    user: CreateUserInterface,
+  ): Promise<PurchaseResponseInterface> {
+    return this.productInterface.buyProduct(id, purchase, user);
   }
 }

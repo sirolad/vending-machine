@@ -13,14 +13,14 @@ import {
   Headers,
 } from '@nestjs/common';
 import { UserService } from '../../application/services/user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { CreateUserDto } from '../dto/user/create-user.dto';
+import { UpdateUserDto } from '../dto/user/update-user.dto';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { CreatedUserDto } from '../dto/created-user.dto';
+import { CreatedUserDto } from '../dto/user/created-user.dto';
 import { Roles } from '../roles.decorator';
-import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import { CreateUserInterface } from '../../domain/interfaces/user/create-user.interface';
 import { Role } from '../../domain/enum/role.enum';
-import { CreateDepositDto } from '../dto/create-deposit.dto';
+import { CreateDepositDto } from '../dto/user/create-deposit.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -56,7 +56,7 @@ export class UserController {
     return UserController.mapUserToCreatedUser(user);
   }
 
-  @Roles('admin', 'buyer', 'seller')
+  @Roles(Role.Admin, Role.Seller, Role.Buyer)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -84,7 +84,7 @@ export class UserController {
   }
 
   @Roles(Role.Buyer)
-  @Patch('/deposit')
+  @Post('/deposit')
   async deposit(
     @Body() createDeposit: CreateDepositDto,
     @Headers() headers,
@@ -99,8 +99,10 @@ export class UserController {
 
   @Patch('/deposit/reset')
   @Roles(Role.Buyer)
-  async resetDeposit(@Headers() headers) {
-    return this.userService.resetDeposit(headers.user);
+  async resetDeposit(@Headers() headers): Promise<CreatedUserDto> {
+    const user = await this.userService.resetDeposit(headers.user);
+
+    return UserController.mapUserToCreatedUser(user);
   }
 
   private static mapUserToCreatedUser(

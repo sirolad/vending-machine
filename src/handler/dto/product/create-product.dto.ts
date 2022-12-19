@@ -1,7 +1,7 @@
-import { CreateProductInterface } from '../../domain/interfaces/create-product.interface';
+import { CreateProductInterface } from '../../../domain/interfaces/product/create-product.interface';
 import { IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../domain/user';
+import { User } from '../../../domain/user';
 import { IsMultipleFive } from 'src/infrastructure/validators/is-multiple-5.validator';
 
 export class CreateProductDto implements CreateProductInterface {
