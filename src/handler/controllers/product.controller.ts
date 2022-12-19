@@ -50,15 +50,21 @@ export class ProductController {
 
   @Patch(':id')
   @Roles(Role.Admin, Role.Seller, Role.Buyer)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateProductDto) {
-    return this.productService.update(+id, updateUserDto).catch((err) => {
-      throw new HttpException(
-        {
-          message: err.message,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    });
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateProductDto,
+    @Headers() headers,
+  ) {
+    return this.productService
+      .update(+id, updateUserDto, headers.user)
+      .catch((err) => {
+        throw new HttpException(
+          {
+            message: err.message,
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      });
   }
 
   @Delete(':id')

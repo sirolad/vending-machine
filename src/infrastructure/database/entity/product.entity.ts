@@ -11,7 +11,7 @@ import { User } from './user.entity';
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ type: 'varchar', name: 'amount_available' })
   amountAvailable: number;
@@ -24,5 +24,5 @@ export class Product {
 
   @ManyToOne(() => User, (user) => user.products, { cascade: true })
   @JoinColumn({ name: 'seller_id' })
-  sellerId: User;
+  user?: User | number;
 }

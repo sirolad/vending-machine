@@ -23,6 +23,6 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.Buyer })
   role: Role;
 
-  @OneToMany(() => Product, (product) => product.sellerId)
+  @OneToMany(() => Product, (product) => product.user)
   products?: Product[];
 }

@@ -1,3 +1,5 @@
+import { User } from '../user';
+
 export interface CreateProductInterface {
   id?: number;
 
@@ -6,4 +8,6 @@ export interface CreateProductInterface {
   cost: number;
 
   name: string;
+
+  user?: User | number;
 }

@@ -1,30 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Product } from '../database/entity/product.entity';
 import { ProductInterface } from '../../domain/interfaces/product.interface';
 import { UpdateProductInterface } from '../../domain/interfaces/update-product.interface';
 import { CreateProductInterface } from 'src/domain/interfaces/create-product.interface';
-import { JwtStrategy } from '../../auth/jwt.strategy';
+import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
+import {
+  Action,
+  ProductAbilityFactory,
+} from '../casl/casl-ability.factory/product-ability.factory';
 
 @Injectable()
 export class ProductRepository implements ProductInterface {
   constructor(
     @InjectRepository(Product)
     private readonly ormRepository: Repository<Product>,
-    private readonly jwtStrategy: JwtStrategy,
+    private readonly productAbilityFactory: ProductAbilityFactory,
   ) {}
 
   async createProduct(
     createProduct: CreateProductInterface,
-    headers,
+    user: CreateUserInterface,
   ): Promise<CreateProductInterface> {
-    const user = await this.jwtStrategy.getUserFromToken(
-      headers['authorization'],
-    );
-
     const productWithSeller = Object.assign({}, createProduct, {
-      sellerId: user.id,
+      user: user.id,
     }) as CreateProductInterface;
 
     const product = this.ormRepository.create(productWithSeller);
@@ -33,11 +33,20 @@ export class ProductRepository implements ProductInterface {
   }
 
   async getAllProducts(): Promise<CreateProductInterface[]> {
-    return Promise.resolve([]);
+    return this.ormRepository.find({
+      relations: {
+        user: true,
+      },
+    });
   }
 
   async getOneProduct(id: number): Promise<CreateProductInterface> {
-    return this.ormRepository.findOneOrFail({ where: { id } });
+    return this.ormRepository.findOneOrFail({
+      where: { id },
+      relations: {
+        user: true,
+      },
+    });
   }
 
   async removeProduct(id: number): Promise<DeleteResult> {
@@ -48,9 +57,18 @@ export class ProductRepository implements ProductInterface {
   async updateProduct(
     id: number,
     product: UpdateProductInterface,
+    user: CreateUserInterface,
   ): Promise<CreateProductInterface> {
-    await this.ormRepository.update(id, product);
+    console.log(user);
+    const ability = this.productAbilityFactory.createForUser(user);
+    const checkedProduct = await this.getOneProduct(id);
 
-    return this.getOneProduct(id);
+    if (ability.can(Action.Update, checkedProduct)) {
+      await this.ormRepository.update(id, product);
+
+      return this.getOneProduct(id);
+    }
+
+    throw new UnauthorizedException();
   }
 }

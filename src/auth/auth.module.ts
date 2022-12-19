@@ -8,7 +8,7 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../infrastructure/database/entity/user.entity';
-import { CaslAbilityFactory } from '../infrastructure/casl/casl-ability.factory/casl-ability.factory';
+import { UserAbilityFactory } from '../infrastructure/casl/casl-ability.factory/user-ability.factory';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
@@ -30,7 +30,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserService,
     AuthService,
     JwtStrategy,
-    CaslAbilityFactory,
+    UserAbilityFactory,
     {
       provide: 'UserInterface',
       useClass: UserRepository,

@@ -18,17 +18,13 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { CreatedUserDto } from '../dto/created-user.dto';
 import { Roles } from '../roles.decorator';
-import { JwtStrategy } from '../../auth/jwt.strategy';
 
 @ApiTags('users')
 @ApiBearerAuth()
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly jwtStrategy: JwtStrategy,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<CreatedUserDto> {

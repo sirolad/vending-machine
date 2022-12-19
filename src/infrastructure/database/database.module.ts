@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -20,6 +21,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
         migrationsRun: true,
       }),
+      dataSourceFactory: async (options) => {
+        return new DataSource(options).initialize();
+      },
     }),
   ],
 })

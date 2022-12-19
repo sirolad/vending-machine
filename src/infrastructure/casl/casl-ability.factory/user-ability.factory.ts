@@ -16,7 +16,7 @@ export enum Action {
   Update = 'update',
   Delete = 'delete',
 }
-export class CaslAbilityFactory {
+export class UserAbilityFactory {
   createForUser(user: CreateUserInterface) {
     const { can, build } = new AbilityBuilder<Ability<[Action, Subjects]>>(
       Ability as AbilityClass<AppAbility>,

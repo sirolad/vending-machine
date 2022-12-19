@@ -8,15 +8,15 @@ import { UpdateUserInterface } from '../../domain/interfaces/update-user.interfa
 import { hashPassword } from '../helper/hash.helper';
 import {
   Action,
-  CaslAbilityFactory,
-} from '../casl/casl-ability.factory/casl-ability.factory';
+  UserAbilityFactory,
+} from '../casl/casl-ability.factory/user-ability.factory';
 
 @Injectable()
 export class UserRepository implements UserInterface {
   constructor(
     @InjectRepository(User)
     private readonly ormRepository: Repository<User>,
-    private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly userAbilityFactory: UserAbilityFactory,
   ) {}
 
   async createUser(
@@ -44,7 +44,7 @@ export class UserRepository implements UserInterface {
     userDto: UpdateUserInterface,
     user: CreateUserInterface,
   ): Promise<CreateUserInterface> {
-    const ability = this.caslAbilityFactory.createForUser(user);
+    const ability = this.userAbilityFactory.createForUser(user);
     const checked = await this.getOneUser(id);
 
     if (ability.can(Action.Update, checked)) {
@@ -64,7 +64,7 @@ export class UserRepository implements UserInterface {
     id: number,
     user: CreateUserInterface,
   ): Promise<DeleteResult> {
-    const ability = this.caslAbilityFactory.createForUser(user);
+    const ability = this.userAbilityFactory.createForUser(user);
     const checked = await this.getOneUser(id);
 
     if (ability.can(Action.Delete, checked)) {
