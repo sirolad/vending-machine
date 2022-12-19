@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../application/services/user.service';
+import { UserService } from '../application/services';
 import { JwtService } from '@nestjs/jwt';
 import { isValidPassword } from '../infrastructure/helper/hash.helper';
-import { CreateUserInterface } from '../domain/interfaces/user/create-user.interface';
+import { CreateUserInterface } from '../domain/interfaces/user';
 import { JwtPayload } from './jwt.strategy';
 
 @Injectable()
