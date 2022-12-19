@@ -7,20 +7,20 @@ export class CreatedUserDto implements CreateUserInterface {
   username: string;
   @Exclude()
   password: string;
-  deposit: number;
+  deposit?: number;
   role: Role;
 
   constructor(
     id: number,
     username: string,
     password: string,
-    deposit: number,
     role: Role,
+    deposit?: number,
   ) {
     this.id = id;
     this.username = username;
     this.password = password;
-    this.deposit = deposit;
     this.role = role;
+    this.deposit = deposit;
   }
 }

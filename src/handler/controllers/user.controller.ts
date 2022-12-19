@@ -18,6 +18,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
 import { CreatedUserDto } from '../dto/created-user.dto';
 import { Roles } from '../roles.decorator';
+import { CreateUserInterface } from '../../domain/interfaces/create-user.interface';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -80,13 +81,15 @@ export class UserController {
     return this.userService.remove(+id, headers.user);
   }
 
-  private static mapUserToCreatedUser(user: CreateUserDto): CreatedUserDto {
+  private static mapUserToCreatedUser(
+    user: CreateUserInterface,
+  ): CreatedUserDto {
     return new CreatedUserDto(
       user.id,
       user.username,
       user.password,
-      user.deposit,
       user.role,
+      user.deposit,
     );
   }
 }

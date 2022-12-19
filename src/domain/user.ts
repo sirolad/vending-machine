@@ -8,7 +8,7 @@ export class User implements CreateUserInterface {
 
   public password: string;
 
-  public deposit: number;
+  public deposit?: number;
 
   public role: Role;
 }

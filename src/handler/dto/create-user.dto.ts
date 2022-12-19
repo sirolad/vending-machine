@@ -31,10 +31,10 @@ export class CreateUserDto implements CreateUserInterface {
   @ApiProperty({ description: 'Password of the user', example: 'Secrets' })
   public password: string;
 
-  @IsNumber()
-  @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
-  @ApiProperty({ description: 'Number of deposit amount', example: 100 })
-  public deposit: number;
+  // @IsNumber()
+  // @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
+  // @ApiProperty({ description: 'Number of deposit amount', example: 100 })
+  // public deposit: number;
 
   @IsEnum(Role)
   @ApiProperty({
@@ -43,17 +43,10 @@ export class CreateUserDto implements CreateUserInterface {
   })
   public role: Role;
 
-  constructor(
-    id: number,
-    username: string,
-    password: string,
-    deposit: number,
-    role: Role,
-  ) {
+  constructor(id: number, username: string, password: string, role: Role) {
     this.id = id;
     this.username = username;
     this.password = password;
-    this.deposit = deposit;
     this.role = role;
   }
 }

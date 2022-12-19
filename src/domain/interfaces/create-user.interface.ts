@@ -4,6 +4,6 @@ export interface CreateUserInterface {
   id?: number;
   username: string;
   password: string;
-  deposit: number;
+  deposit?: number;
   role: Role;
 }

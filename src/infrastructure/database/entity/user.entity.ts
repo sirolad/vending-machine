@@ -18,7 +18,7 @@ export class User {
   @Column({ type: 'int', nullable: true })
   @IsNumber()
   @Validate(IsValidCoin, { message: 'Only Valid coins are allowed.' })
-  deposit: number;
+  deposit?: number = 0;
 
   @Column({ type: 'enum', enum: Role, default: Role.Buyer })
   role: Role;
