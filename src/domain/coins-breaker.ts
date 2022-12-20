@@ -1,7 +1,7 @@
 export class CoinsBreaker {
-  public coins: number[] = [100, 50, 20, 10, 5];
+  coins: number[] = [100, 50, 20, 10, 5];
 
-  public breakBalanceToCoins(balance: number): Record<number, number> | number {
+  breakBalanceToCoins(balance: number): Record<number, number> | number {
     const change: Record<number, number> = {};
     this.coins.forEach((coin) => {
       const count: number = balance / coin;
