@@ -57,7 +57,7 @@ export class ProductRepository implements ProductInterface {
   }
 
   async getOneProduct(id: number): Promise<CreateProductInterface> {
-    return this.ormRepository.findOne({
+    return this.ormRepository.findOneOrFail({
       where: { id },
       relations: {
         user: true,
