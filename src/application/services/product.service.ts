@@ -1,11 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { ProductInterface } from '../../domain/interfaces/product/product.interface';
-import { CreateProductInterface } from '../../domain/interfaces/product/create-product.interface';
-import { UpdateProductInterface } from '../../domain/interfaces/product/update-product.interface';
-import { CreateUserInterface } from '../../domain/interfaces/user/create-user.interface';
-import { PurchaseInterface } from '../../domain/interfaces/product/purchase.interface';
-import { PurchaseResponseInterface } from '../../domain/interfaces/product/purchase-response.interface';
+import { CreateUserInterface } from '../../domain/interfaces/user';
+import {
+  PurchaseInterface,
+  PurchaseResponseInterface,
+  UpdateProductInterface,
+  CreateProductInterface,
+  ProductInterface,
+} from '../../domain/interfaces/product';
 
 @Injectable()
 export class ProductService {

@@ -20,7 +20,7 @@ import {
   CreateDepositDto,
 } from '../dto/user';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { Roles } from '../roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { CreateUserInterface } from '../../domain/interfaces/user';
 import { Role } from '../../domain/enum/role.enum';
 

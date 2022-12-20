@@ -18,7 +18,7 @@ import {
   PurchaseDto,
 } from '../dto/product';
 import { UpdateProductDto } from '../dto/product';
-import { Roles } from '../roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../../domain/enum/role.enum';
 import { CreateProductInterface } from '../../domain/interfaces/product';
 
