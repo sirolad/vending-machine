@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, DeleteResult, Repository } from 'typeorm';
 import { Product } from '../database/entity/product.entity';
@@ -19,6 +23,7 @@ import {
   InsufficientFundsException,
 } from '../../domain/exceptions';
 import { User } from '../database/entity/user.entity';
+import { CoinsBreaker } from '../../domain';
 
 @Injectable()
 export class ProductRepository implements ProductInterface {
@@ -27,6 +32,7 @@ export class ProductRepository implements ProductInterface {
     private readonly ormRepository: Repository<Product>,
     private readonly dataSource: DataSource,
     private readonly productAbilityFactory: ProductAbilityFactory,
+    private readonly coinsbreaker: CoinsBreaker,
   ) {}
 
   async createProduct(
@@ -108,10 +114,11 @@ export class ProductRepository implements ProductInterface {
       this.checkFunds(costOfPurchase, credit);
       const costOfSale = credit - costOfProduct;
       product.amountAvailable -= quantity;
-      user.deposit -= costOfSale;
+      user.deposit = costOfSale;
 
       await this.ormRepository.save(product);
       await queryRunner.manager.save(user);
+
       await queryRunner.commitTransaction();
       const finalUser = await queryRunner.manager.findOne(User, {
         where: { id: user.id },
@@ -119,10 +126,11 @@ export class ProductRepository implements ProductInterface {
       return {
         cost: costOfProduct,
         product: product.name,
-        balance: finalUser.deposit,
+        balance: this.coinsbreaker.breakBalanceToCoins(finalUser.deposit),
       };
     } catch (err) {
       await queryRunner.rollbackTransaction();
+      throw new HttpException(err.response, err.status);
     } finally {
       await queryRunner.release();
     }

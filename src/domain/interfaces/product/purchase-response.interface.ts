@@ -1,5 +1,5 @@
 export interface PurchaseResponseInterface {
   cost: number;
   product: string;
-  balance: number;
+  balance: Record<number, number> | number;
 }
