@@ -17,6 +17,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './infrastructure/auth/jwt.strategy';
 import { AuthService } from './infrastructure/auth/auth.service';
 import { CaslModule } from './infrastructure/casl/casl.module';
+import { CoinsBreaker } from './domain';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { CaslModule } from './infrastructure/casl/casl.module';
     JwtService,
     JwtStrategy,
     AuthService,
+    CoinsBreaker,
     {
       provide: 'UserInterface',
       useClass: UserRepository,

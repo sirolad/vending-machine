@@ -1,17 +1,14 @@
 import {
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsString,
   Matches,
   MaxLength,
   MinLength,
-  Validate,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '../../../domain/enum/role.enum';
-import { CreateUserInterface } from '../../../domain/interfaces/user/create-user.interface';
-import { IsValidCoin } from 'src/infrastructure/validators/is-valid-coin.validator';
+import { CreateUserInterface } from '../../../domain/interfaces/user';
 
 export class CreateUserDto implements CreateUserInterface {
   public id?: number;

@@ -12,13 +12,15 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from 'src/application/services/product.service';
-import { CreateProductDto } from '../dto/product/create-product.dto';
-import { UpdateProductDto } from '../dto/product/update-product.dto';
-import { Roles } from '../roles.decorator';
+import {
+  CreateProductDto,
+  CreatedProductDto,
+  PurchaseDto,
+} from '../dto/product';
+import { UpdateProductDto } from '../dto/product';
+import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../../domain/enum/role.enum';
-import { CreatedProductDto } from '../dto/product/created-product.dto';
-import { CreateProductInterface } from '../../domain/interfaces/product/create-product.interface';
-import { PurchaseDto } from '../dto/product/purchase.dto';
+import { CreateProductInterface } from '../../domain/interfaces/product';
 
 @ApiTags('products')
 @ApiBearerAuth()
