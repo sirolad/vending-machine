@@ -19,7 +19,7 @@ import { DataSource } from 'typeorm';
         synchronize: false,
         autoLoadEntities: true,
         migrations: [__dirname + '/../database/migrations/**/*{.ts,.js}'],
-        migrationsRun: true,
+        migrationsRun: false,
       }),
       dataSourceFactory: async (options) => {
         return new DataSource(options).initialize();

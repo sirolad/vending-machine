@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Role } from '../../../domain/enum/role.enum';
-import { CreateUserInterface } from '../../../domain/interfaces/user/create-user.interface';
+import { CreateUserInterface } from '../../../domain/interfaces/user';
 
 export class CreatedUserDto implements CreateUserInterface {
   id: number;

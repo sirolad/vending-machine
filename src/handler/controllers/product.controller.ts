@@ -11,7 +11,7 @@ import {
   Headers,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ProductService } from 'src/application/services/product.service';
+
 import {
   CreateProductDto,
   CreatedProductDto,
@@ -21,6 +21,7 @@ import { UpdateProductDto } from '../dto/product';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../../domain/enum/role.enum';
 import { CreateProductInterface } from '../../domain/interfaces/product';
+import { ProductService } from '../../application/services';
 
 @ApiTags('products')
 @ApiBearerAuth()
@@ -30,8 +31,11 @@ export class ProductController {
 
   @Post()
   @Roles(Role.Seller)
-  create(@Body() createProductDto: CreateProductDto, @Headers() headers) {
-    return this.productService
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @Headers() headers,
+  ): Promise<CreatedProductDto> {
+    const product = await this.productService
       .create(createProductDto, headers.user)
       .catch((err) => {
         throw new HttpException(
@@ -41,6 +45,8 @@ export class ProductController {
           HttpStatus.BAD_REQUEST,
         );
       });
+
+    return ProductController.mapProductToCreatedProduct(product);
   }
 
   @Get()
