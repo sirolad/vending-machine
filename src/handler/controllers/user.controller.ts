@@ -12,15 +12,17 @@ import {
   HttpStatus,
   Headers,
 } from '@nestjs/common';
-import { UserService } from '../../application/services/user.service';
-import { CreateUserDto } from '../dto/user/create-user.dto';
-import { UpdateUserDto } from '../dto/user/update-user.dto';
+import { UserService } from '../../application/services';
+import {
+  CreateUserDto,
+  CreatedUserDto,
+  UpdateUserDto,
+  CreateDepositDto,
+} from '../dto/user';
 import { ApiBearerAuth, ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { CreatedUserDto } from '../dto/user/created-user.dto';
 import { Roles } from '../roles.decorator';
-import { CreateUserInterface } from '../../domain/interfaces/user/create-user.interface';
+import { CreateUserInterface } from '../../domain/interfaces/user';
 import { Role } from '../../domain/enum/role.enum';
-import { CreateDepositDto } from '../dto/user/create-deposit.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
