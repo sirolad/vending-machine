@@ -6,18 +6,14 @@ export class CoinsBreaker {
     let leftOver: number = balance;
 
     this.coins.forEach((coin) => {
-      while (leftOver > coin) {
+      while (leftOver >= coin) {
         if (change[coin]) {
           change[coin] += 1;
         } else {
           change[coin] = 1;
         }
 
-        leftOver = leftOver - coin;
-
-        if (leftOver < 0) {
-          return;
-        }
+        leftOver -= coin;
       }
     });
     // console.log(change);
