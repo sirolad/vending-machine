@@ -3,16 +3,17 @@ export class CoinsBreaker {
 
   breakBalanceToCoins(balance: number): Record<number, number> | number {
     const change: Record<number, number> = {};
+    let leftOver: number = balance;
+
     this.coins.forEach((coin) => {
-      const count: number = balance / coin;
-
-      if (count > 0) {
-        change[coin] = count;
-        balance -= count * coin;
-
-        if (balance < 0) {
-          return;
+      while (leftOver >= coin) {
+        if (change[coin]) {
+          change[coin] += 1;
+        } else {
+          change[coin] = 1;
         }
+
+        leftOver -= coin;
       }
     });
 
