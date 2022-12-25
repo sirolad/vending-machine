@@ -16,7 +16,7 @@ export class CoinsBreaker {
         leftOver -= coin;
       }
     });
-    // console.log(change);
+
     return Object.keys(change).length === 0 ? 0 : change;
   }
 }
