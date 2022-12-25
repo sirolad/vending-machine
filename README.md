@@ -31,10 +31,15 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+
+## Running In Docker
+1. Have Docker and Docker Desktop or Colima running.
+2. Run docker-compose up --build.
+3. When the app is running, go to http://localhost:3000/api
+4. Login to the PGadmin and create a database server.
+5. SSH into the nest application and run ```npm run typeorm:run``` to create the migrations.
+6. Now you can run the see the available endpoints via Swagger
 
 ## Test
 
