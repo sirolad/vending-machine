@@ -32,7 +32,7 @@ export class ProductRepository implements ProductInterface {
     private readonly ormRepository: Repository<Product>,
     private readonly dataSource: DataSource,
     private readonly productAbilityFactory: ProductAbilityFactory,
-    private readonly coinsbreaker: CoinsBreaker,
+    private readonly coinsBreaker: CoinsBreaker,
   ) {}
 
   async createProduct(
@@ -112,7 +112,7 @@ export class ProductRepository implements ProductInterface {
       this.checkAvailability(quantity, availableProduct);
       const costOfPurchase = quantity * costOfProduct;
       this.checkFunds(costOfPurchase, credit);
-      const costOfSale = credit - costOfProduct;
+      const costOfSale = credit - costOfPurchase;
       product.amountAvailable -= quantity;
       user.deposit = costOfSale;
 
@@ -126,7 +126,7 @@ export class ProductRepository implements ProductInterface {
       return {
         cost: costOfProduct,
         product: product.name,
-        balance: this.coinsbreaker.breakBalanceToCoins(finalUser.deposit),
+        balance: this.coinsBreaker.breakBalanceToCoins(finalUser.deposit),
       };
     } catch (err) {
       await queryRunner.rollbackTransaction();
