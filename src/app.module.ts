@@ -23,6 +23,7 @@ import { CoinsBreaker } from './domain';
   imports: [
     TypeOrmModule.forFeature([User, Product]),
     ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV == 'test' ? '.env.test' : '.env',
       isGlobal: true,
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
@@ -34,6 +35,7 @@ import { CoinsBreaker } from './domain';
         APP_EXPIRES: Joi.string().required(),
         APP_PORT: Joi.number().required(),
         SALT_OR_ROUNDS: Joi.number().required(),
+        NODE_ENV: Joi.string().valid('development', 'production', 'test'),
       }),
     }),
     DatabaseModule,

@@ -1,18 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+
+import { DataSource } from 'typeorm';
+import { User } from '../src/infrastructure/database/entity/user.entity';
+import { Product } from '../src/infrastructure/database/entity/product.entity';
+import dataSource from '../src/infrastructure/config/typeorm.config';
 
 @Injectable()
 export class TestService {
-  constructor(@Inject('Connection') public connection: Connection) {}
-
   public async cleanDatabase(): Promise<void> {
     try {
-      const entities = this.connection.entityMetadatas;
-      const tableNames = entities
-        .map((entity) => `"${entity.tableName}"`)
-        .join(', ');
+      await dataSource.destroy();
+      await dataSource.initialize();
+      await dataSource.query(`TRUNCATE products RESTART IDENTITY CASCADE;`);
+      await dataSource.query(`TRUNCATE users RESTART IDENTITY CASCADE;`);
 
-      await this.connection.query(`TRUNCATE ${tableNames} CASCADE;`);
+      await dataSource.destroy();
     } catch (error) {
       throw new Error(`ERROR: Cleaning test database: ${error}`);
     }
