@@ -43,6 +43,8 @@ $ npm run start:dev
 
 ## Test
 
+* Create a test database(vending_machine_test) since we are having an e2e test.
+
 ```bash
 # e2e tests
 $ npm run test:e2e

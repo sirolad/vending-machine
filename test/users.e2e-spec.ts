@@ -2,31 +2,18 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../src/infrastructure/database/entity/user.entity';
 import { Product } from '../src/infrastructure/database/entity/product.entity';
-import { ConfigModule } from '@nestjs/config';
 import { Role } from '../dist/domain/enum/role.enum';
+import { TestService } from './test.service';
+import dataSource from '../src/infrastructure/config/typeorm.config';
 
 describe('Vending Machine (e2e)', () => {
   let app: INestApplication;
+  const testService = new TestService();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        AppModule,
-        ConfigModule.forRoot({
-          envFilePath: '.env.test',
-        }),
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          database: process.env.POSTGRES_DB,
-          entities: [User, Product],
-          logging: true,
-          synchronize: true,
-          migrationsRun: true,
-        }),
-      ],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -35,6 +22,7 @@ describe('Vending Machine (e2e)', () => {
   });
 
   afterAll(async () => {
+    await testService.cleanDatabase();
     await app.close();
   });
 
@@ -167,9 +155,14 @@ describe('Vending Machine (e2e)', () => {
       });
   });
 
-  it('Let the Buyer buy a product', () => {
+  it('Let the Buyer buy a product', async () => {
+    await dataSource.initialize();
+    const getProduct = await dataSource
+      .getRepository(Product)
+      .findOne({ where: { id: null } });
+
     return request(app.getHttpServer())
-      .post('/products/1/buy')
+      .post(`/products/${getProduct.id}/buy`)
       .set('Accept', 'application/json')
       .auth(buyerAuth, { type: 'bearer' })
       .send({
