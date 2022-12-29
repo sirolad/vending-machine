@@ -119,14 +119,19 @@ export class ProductRepository implements ProductInterface {
       await this.ormRepository.save(product);
       await queryRunner.manager.save(user);
 
-      await queryRunner.commitTransaction();
       const finalUser = await queryRunner.manager.findOne(User, {
         where: { id: user.id },
       });
+
+      const finalBalance = finalUser.deposit;
+
+      finalUser.deposit = 0;
+      await queryRunner.manager.save(finalUser);
+      await queryRunner.commitTransaction();
       return {
         cost: costOfProduct,
         product: product.name,
-        balance: this.coinsBreaker.breakBalanceToCoins(finalUser.deposit),
+        balance: this.coinsBreaker.breakBalanceToCoins(finalBalance),
       };
     } catch (err) {
       await queryRunner.rollbackTransaction();
